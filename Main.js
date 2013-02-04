@@ -16,6 +16,9 @@ var ball;
 var velx;
 var vely;
 
+var ceiling;
+
+var beginText;
 var update;
 
 
@@ -66,13 +69,14 @@ function Main()
 	cPaddle.width = 7;
 	cPaddle.onPress = pressed;
 	
-	cPaddleSpeed = 4;
+	cPaddleSpeed = 1;
 	
-	/////////	
+	/////////
+	ceiling = 30;
 	var line = new Graphics();
 	line.setStrokeStyle(1);
 	line.beginFill(Graphics.getRGB(255, 255, 255));
-	line.drawRect(0,30, 480, 1);
+	line.drawRect(0,ceiling, 480, 1);
 	var l = new Shape(line);
 	l.x = 0;
 	l.y = 0;
@@ -88,6 +92,10 @@ function Main()
 	stage.update();
 	////////////
 	
+	beginText = new Text('Click to Begin', 'bold 30px Arial', '#FFF');
+	beginText.x = 135;
+	beginText.y = 180;
+	beginText.onPress = handleBegin;
 
 	b = new Graphics();
 	b.setStrokeStyle(1);
@@ -98,7 +106,7 @@ function Main()
 	ball.x = 220;
 	ball.y = 100;
 	ball.radius = 5;
-	stage.addChild(ball, playerPaddle, cPaddle);
+	stage.addChild(ball, playerPaddle, cPaddle, beginText);
 	stage.update();
 	
 	
@@ -106,7 +114,11 @@ function Main()
 	Ticker.addListener(stage);
 	stage.onMouseMove = movePaddle;
 	Ticker.addListener(window);
-	
+}
+
+function handleBegin()
+{
+	stage.removeChild(beginText);
 	update = true;
 }
 
@@ -143,7 +155,7 @@ function updateBall()
 	{
 		velx = velx * -1;
 	}
-	if(ball.x <= 30 + ball.radius)
+	if(ball.x <= 0 + ball.radius)
 	{
 		velx = velx * -1;
 	}
@@ -151,7 +163,7 @@ function updateBall()
 	{
 		vely = vely * -1;
 	}
-	if(ball.y <= 30 + ball.radius)
+	if(ball.y <= ceiling + ball.radius)
 	{
 		vely = vely * -1;
 	}	
@@ -168,9 +180,9 @@ function updateCPU()
 		cPaddle.y -= cPaddleSpeed;
 	}
 	
-	if(cPaddle.y <= 30)
+	if(cPaddle.y <= ceiling)
 	{
-		cPaddle.y = 30;
+		cPaddle.y = ceiling;
 	}
 	if(cPaddle.y + cPaddle.height >= 320)
 	{
@@ -181,9 +193,9 @@ function updateCPU()
 function movePaddle(e)
 {
 	playerPaddle.y = e.stageY - playerPaddle.height * 0.5;
-	if(playerPaddle.y <= 30)
+	if(playerPaddle.y <= ceiling)
 	{
-		playerPaddle.y = 30;
+		playerPaddle.y = ceiling;
 	}
 	if(playerPaddle.y + playerPaddle.height >= 320)
 	{
@@ -216,5 +228,5 @@ function resetBoard()
 
 function pressed()
 {
-	alert("you pressed the player paddle");
+	alert("you pressed the a paddle");
 }
