@@ -20,6 +20,7 @@ var ceiling;
 
 var beginText;
 var update;
+var delta;
 
 
 function Main()
@@ -28,6 +29,7 @@ function Main()
 	
     stage = new Stage(canvas);
     stage.mouseEventsEnabled = true;
+    stage.onMouseUp = stageMouseUp;
 
 	playerScore = new Text('0', 'bold 20px Arial', '#FFF');
     playerScore.x = 211;
@@ -94,7 +96,7 @@ function Main()
 	
 	beginText = new Text('Click to Begin', 'bold 30px Arial', '#FFF');
 	beginText.x = 135;
-	beginText.y = 180;
+	beginText.y = 90;
 	beginText.onPress = handleBegin;
 
 	b = new Graphics();
@@ -103,17 +105,18 @@ function Main()
 	b.beginFill(Graphics.getRGB(255, 255, 255));
 	b.drawCircle(0, 0, 5);
 	ball = new Shape(b);
-	ball.x = 220;
-	ball.y = 100;
+	ball.x = 480 * 0.5;
+	ball.y = 320 * 0.5;
 	ball.radius = 5;
 	stage.addChild(ball, playerPaddle, cPaddle, beginText);
 	stage.update();
 	
 	
-	Ticker.setFPS(40);
+	Ticker.setFPS(60);
 	Ticker.addListener(stage);
 	stage.onMouseMove = movePaddle;
 	Ticker.addListener(window);
+	delta = 1;
 }
 
 function handleBegin()
@@ -123,7 +126,7 @@ function handleBegin()
 }
 
 function tick()
-{
+{	
 	if(update)
 	{
 		updateBall();
@@ -132,6 +135,12 @@ function tick()
 		checkScore();
 		stage.update();
 	}
+}
+
+function stageMouseUp()
+{
+	if(!udpate)
+		handleBegin();
 }
 
 function checkCollision()
@@ -149,8 +158,8 @@ function checkCollision()
 
 function updateBall()
 {
-	ball.x += velx;
-	ball.y += vely;
+	ball.x += velx * delta;
+	ball.y += vely * delta;
 	if(ball.x >= 480 - ball.radius)
 	{
 		velx = velx * -1;
@@ -173,11 +182,11 @@ function updateCPU()
 {	
 	if(cPaddle.y + cPaddle.height * 0.5 < ball.y)
 	{
-		cPaddle.y += cPaddleSpeed;
+		cPaddle.y += cPaddleSpeed * delta;
 	}
 	if(cPaddle.y + cPaddle.height * 0.5 > ball.y)
 	{
-		cPaddle.y -= cPaddleSpeed;
+		cPaddle.y -= cPaddleSpeed * delta;
 	}
 	
 	if(cPaddle.y <= ceiling)
@@ -222,8 +231,10 @@ function checkScore()
 
 function resetBoard()
 {
-	ball.x = 220;
-	ball.y = 100;
+	update = false;
+	stage.addChild(beginText);
+	ball.x = 480 * 0.5;
+	ball.y = 320 * 0.5;
 }
 
 function pressed()
