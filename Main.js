@@ -32,6 +32,8 @@ function Main()
     stage = new Stage(canvas);
     stage.mouseEventsEnabled = true;
     stage.onMouseUp = stageMouseUp;
+    window.addEventListener('resize', resizeGame, false);
+	window.addEventListener('orientationchange', resizeGame, false);
 
 
 	playerScore = new Text('0', 'bold 20px Arial', '#FFF');
@@ -42,8 +44,8 @@ function Main()
     cpuScore.x = 261;
     cpuScore.y = 20;
 	
-	velx = vely = Math.floor(Math.random() * (3 - (-2) +1)) + (-3); //2;
-	vely = Math.floor(Math.random() * (4-2+1)) + 2; //vely = 4;
+	velx = Math.floor(Math.random() * (5 - (-4) + 1 )) + (-4); //velx = 2;
+	vely = Math.floor(Math.random() * (4 - (-2) + 1 )) + (-2); //vely = 4;
 	//Math.floor(Math.random() * (75-25+1)) + 25;
 	
 	stage.addChild(playerScore, cpuScore);
@@ -151,12 +153,12 @@ function stageMouseUp()
 
 function checkCollision()
 {
-	if(ball.x - ball.radius <= playerPaddle.x + playerPaddle.width && ball.y - ball.radius >= playerPaddle.y && ball.y + ball.radius <= playerPaddle.y + playerPaddle.height)
+	if(ball.x - ball.radius < playerPaddle.x + playerPaddle.width && ball.y - ball.radius > playerPaddle.y && ball.y + ball.radius < playerPaddle.y + playerPaddle.height)
 	{	
 			velx = velx * -1;
 	}
 	
-	if(ball.x + ball.radius >= cPaddle.x && ball.y + ball.radius >= cPaddle.y && ball.y + ball.radius <= cPaddle.y + cPaddle.height)
+	if(ball.x + ball.radius > cPaddle.x && ball.y + ball.radius > cPaddle.y && ball.y + ball.radius < cPaddle.y + cPaddle.height)
 	{
 			velx = velx * -1;
 	}
@@ -246,4 +248,29 @@ function resetBoard()
 function pressed()
 {
 	alert("you pressed the a paddle");
+}
+
+function resizeGame() {
+    var gameArea = document.getElementById('gameArea');
+    var widthToHeight = 4 / 3;
+    var newWidth = window.innerWidth;
+    var newHeight = window.innerHeight;
+    var newWidthToHeight = newWidth / newHeight;
+    
+    if (newWidthToHeight > widthToHeight) {
+        newWidth = newHeight * widthToHeight;
+        gameArea.style.height = newHeight + 'px';
+        gameArea.style.width = newWidth + 'px';
+    } else {
+        newHeight = newWidth / widthToHeight;
+        gameArea.style.width = newWidth + 'px';
+        gameArea.style.height = newHeight + 'px';
+    }
+    
+    gameArea.style.marginTop = (-newHeight / 2) + 'px';
+    gameArea.style.marginLeft = (-newWidth / 2) + 'px';
+    
+    var gameCanvas = document.getElementById('PongStage');
+    gameCanvas.width = newWidth;
+    gameCanvas.height = newHeight;
 }
