@@ -1,5 +1,7 @@
 var canvas; 
 var stage;
+var _w = 480;
+var _h = 320;
 
 var playerScore;
 var cpuScore;
@@ -31,6 +33,7 @@ function Main()
     stage.mouseEventsEnabled = true;
     stage.onMouseUp = stageMouseUp;
 
+
 	playerScore = new Text('0', 'bold 20px Arial', '#FFF');
     playerScore.x = 211;
     playerScore.y = 20;
@@ -39,9 +42,9 @@ function Main()
     cpuScore.x = 261;
     cpuScore.y = 20;
 	
-	velx = 2;
-	vely = 4;
-	
+	velx = vely = Math.floor(Math.random() * (3 - (-2) +1)) + (-3); //2;
+	vely = Math.floor(Math.random() * (4-2+1)) + 2; //vely = 4;
+	//Math.floor(Math.random() * (75-25+1)) + 25;
 	
 	stage.addChild(playerScore, cpuScore);
     stage.update();
@@ -117,6 +120,7 @@ function Main()
 	stage.onMouseMove = movePaddle;
 	Ticker.addListener(window);
 	delta = 1;
+	update = false;
 }
 
 function handleBegin()
@@ -139,8 +143,10 @@ function tick()
 
 function stageMouseUp()
 {
-	if(!udpate)
+	if(!update)
+	{
 		handleBegin();
+	}
 }
 
 function checkCollision()
