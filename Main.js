@@ -29,20 +29,21 @@ function Main()
 {
 	canvas = document.getElementById('PongStage');
 	
-    stage = new Stage(canvas);
+    stage = new createjs.Stage(canvas);
+    
     stage.mouseEventsEnabled = true;
     stage.onMouseUp = stageMouseUp;
     window.addEventListener('resize', resizeGame, false);
 	window.addEventListener('orientationchange', resizeGame, false);
 
 
-	playerScore = new Text('0', 'bold 20px Arial', '#FFF');
+	playerScore = new createjs.Text('0', 'bold 20px Arial', '#FFF');
     playerScore.x = 211;
-    playerScore.y = 20;
+    playerScore.y = 10;
     
-    cpuScore = new Text('0', 'bold 20px Arial', '#FFF');
+    cpuScore = new createjs.Text('0', 'bold 20px Arial', '#FFF');
     cpuScore.x = 261;
-    cpuScore.y = 20;
+    cpuScore.y = 10;
 	
 	velx = Math.floor(Math.random() * (5 - (-4) + 1 )) + (-4); //velx = 2;
 	vely = Math.floor(Math.random() * (4 - (-2) + 1 )) + (-2); //vely = 4;
@@ -51,25 +52,27 @@ function Main()
 	stage.addChild(playerScore, cpuScore);
     stage.update();
     
-    pl = new Graphics();
+    
+    pl = new createjs.Graphics();
 	pl.setStrokeStyle(1);
 	//pl.beginStroke(Graphics.getRGB(0,0,0));
-	pl.beginFill(Graphics.getRGB(255,255,255));
+	pl.beginFill(createjs.Graphics.getRGB(255,255,255));
 	//g.drawCircle(0,0,20);
 	pl.drawRect(0, 0, 7, 70);
-	playerPaddle = new Shape(pl);
+	playerPaddle = new createjs.Shape(pl);
 	playerPaddle.x = 30;
 	playerPaddle.y = 100;
 	playerPaddle.height = 70;
 	playerPaddle.width = 6;
 	playerPaddle.onPress = pressed;
 	
-	cp = new Graphics();
+	
+	cp = new createjs.Graphics();
 	cp.setStrokeStyle(1);
 	//cp.beginStroke(Graphics.getRGB(0, 0, 0));
-	cp.beginFill(Graphics.getRGB(255, 255, 255));
+	cp.beginFill(createjs.Graphics.getRGB(255, 255, 255));
 	cp.drawRect(0, 0, 7, 70);
-	cPaddle = new Shape(cp);
+	cPaddle = new createjs.Shape(cp);
 	cPaddle.x = 446;
 	cPaddle.y = 100;
 	cPaddle.height = 70;
@@ -80,36 +83,36 @@ function Main()
 	
 	/////////
 	ceiling = 30;
-	var line = new Graphics();
+	var line = new createjs.Graphics();
 	line.setStrokeStyle(1);
-	line.beginFill(Graphics.getRGB(255, 255, 255));
+	line.beginFill(createjs.Graphics.getRGB(255, 255, 255));
 	line.drawRect(0,ceiling, 480, 1);
-	var l = new Shape(line);
+	var l = new createjs.Shape(line);
 	l.x = 0;
 	l.y = 0;
 	
-	var l2 = new Graphics();
+	var l2 = new createjs.Graphics();
 	l2.setStrokeStyle(1);
-	l2.beginFill(Graphics.getRGB(255, 255, 255));
+	l2.beginFill(createjs.Graphics.getRGB(255, 255, 255));
 	line.drawRect(480*0.5, 0, 1, 320);
-	var l2l = new Shape(l2);
+	var l2l = new createjs.Shape(l2);
 	l2l.x = 0;
 	l2l.y = 0;	
 	stage.addChild(l, l2l);
 	stage.update();
 	////////////
 	
-	beginText = new Text('Click to Begin', 'bold 30px Arial', '#FFF');
+	beginText = new createjs.Text('Click to Begin', 'bold 30px Arial', '#FFF');
 	beginText.x = 135;
 	beginText.y = 90;
 	beginText.onPress = handleBegin;
 
-	b = new Graphics();
+	b = new createjs.Graphics();
 	b.setStrokeStyle(1);
 	//b.beginStroke(Graphics.getRGB(0, 0, 0));
-	b.beginFill(Graphics.getRGB(255, 255, 255));
+	b.beginFill(createjs.Graphics.getRGB(255, 255, 255));
 	b.drawCircle(0, 0, 5);
-	ball = new Shape(b);
+	ball = new createjs.Shape(b);
 	ball.x = 480 * 0.5;
 	ball.y = 320 * 0.5;
 	ball.radius = 5;
@@ -117,10 +120,10 @@ function Main()
 	stage.update();
 	
 	
-	Ticker.setFPS(60);
-	Ticker.addListener(stage);
+	createjs.Ticker.setFPS(60);
+	createjs.Ticker.addListener(stage);
 	stage.onMouseMove = movePaddle;
-	Ticker.addListener(window);
+	createjs.Ticker.addListener(window);
 	delta = 1;
 	update = false;
 }
