@@ -9,7 +9,7 @@ var cpuScore;
 var pl;
 var pPaddle;
 
-var cp;
+var cp; 
 var cPaddle;
 var cPaddleSpeed;
 
